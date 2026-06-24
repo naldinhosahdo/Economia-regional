@@ -1,37 +1,57 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup, Tooltip, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import NeighborhoodPopup from './NeighborhoodPopup';
 
-const volumeToNumber = (v) => {
-  const m = { 'muito alto': 1.0, 'alto': 0.8, 'médio': 0.5, 'baixo': 0.3, 'muito baixo': 0.1 };
+const informalToNum = (v) => {
+  if (v.includes('muito alta')) return 1.0;
+  if (v.includes('alta')) return 0.75;
+  if (v.includes('média')) return 0.5;
+  if (v.includes('baixa')) return 0.25;
+  if (v.includes('muito baixa')) return 0.1;
+  return 0.5;
+};
+
+const employmentToNum = (v) => {
+  const m = { 'alto': 1.0, 'médio': 0.55, 'baixo': 0.2 };
+  return m[v] ?? 0.5;
+};
+
+const trendToNum = (v) => {
+  const m = { 'crescendo': 1.0, 'estável': 0.5, 'retraindo': 0.1 };
   return m[v] ?? 0.5;
 };
 
 const getLayerValue = (n, layer) => {
   switch (layer) {
-    case 'score': return n.score / 100;
-    case 'rent': return Math.min(n.avgRent / 5000, 1);
-    case 'delivery': return volumeToNumber(n.deliveryVolume);
-    case 'moto': return volumeToNumber(n.motoApps);
-    case 'gaps': return n.gaps.length / 5;
-    default: return n.score / 100;
+    case 'score':      return n.score / 100;
+    case 'income':     return Math.min(n.avgIncome / 10000, 1);
+    case 'rent':       return Math.min(n.avgRent / 5000, 1);
+    case 'informal':   return informalToNum(n.informalEconomy);
+    case 'trend':      return trendToNum(n.economyTrend);
+    case 'employment': return employmentToNum(n.employmentRate);
+    default:           return n.score / 100;
   }
 };
 
-const layerColor = (value, layer) => {
-  if (layer === 'rent') {
-    const r = Math.round(value * 245 + 10);
-    const g = Math.round((1 - value) * 180 + 50);
-    return `rgb(${r}, ${g}, 50)`;
-  }
-  if (layer === 'gaps') {
-    return `rgb(245, ${Math.round((1 - value) * 100 + 100)}, 50)`;
-  }
-  const r = Math.round(value * 245 + 10);
-  const g = Math.round(value * 180 + 50);
-  const b = 50;
-  return `rgb(${r}, ${g}, ${b})`;
+// Green → Yellow → Red scale
+const valueToColor = (v) => {
+  if (v >= 0.7) return `rgb(${Math.round(80 + v * 170)}, ${Math.round(220 - v * 60)}, 60)`;
+  if (v >= 0.4) return `rgb(240, ${Math.round(150 + v * 80)}, 40)`;
+  return `rgb(230, ${Math.round(v * 120)}, 50)`;
+};
+
+// For informal economy, higher = more red (warning)
+const informalColor = (v) => {
+  const r = Math.round(100 + v * 150);
+  const g = Math.round(200 - v * 150);
+  return `rgb(${r}, ${g}, 50)`;
+};
+
+const getColor = (n, layer) => {
+  const v = getLayerValue(n, layer);
+  if (layer === 'informal') return informalColor(v);
+  return valueToColor(v);
 };
 
 function FlyTo({ coords }) {
@@ -54,7 +74,6 @@ export default function MapView({ neighborhoods, activeLayer, selectedNeighborho
       center={[-3.7658, -38.5423]}
       zoom={12}
       style={{ height: '100%', width: '100%' }}
-      zoomControl={true}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -63,42 +82,38 @@ export default function MapView({ neighborhoods, activeLayer, selectedNeighborho
       <FlyTo coords={flyTo} />
 
       {neighborhoods.map((n) => {
-        const value = getLayerValue(n, activeLayer);
-        const radius = 400 + value * 600;
-        const color = layerColor(value, activeLayer);
+        const color = getColor(n, activeLayer);
         const isSelected = selectedNeighborhood?.id === n.id;
+        const value = getLayerValue(n, activeLayer);
 
         return (
           <CircleMarker
             key={n.id}
             center={n.coords}
-            radius={isSelected ? 28 : 22}
+            radius={isSelected ? 30 : Math.round(16 + value * 12)}
             pathOptions={{
               fillColor: color,
-              fillOpacity: isSelected ? 0.85 : 0.65,
+              fillOpacity: isSelected ? 0.9 : 0.7,
               color: isSelected ? '#ffffff' : color,
               weight: isSelected ? 2.5 : 1,
             }}
-            eventHandlers={{
-              click: () => onSelect(n),
-            }}
+            eventHandlers={{ click: () => onSelect(n) }}
           >
             <Tooltip
-              permanent={false}
               direction="top"
               className="neighborhood-tooltip"
-              offset={[0, -12]}
+              offset={[0, -14]}
             >
               <div>
                 <strong>{n.name}</strong>
-                <div style={{ fontSize: 11, color: '#94a3b8' }}>{n.topBusiness}</div>
+                <div style={{ fontSize: 11, color: '#94a3b8' }}>{n.dominantActivity}</div>
               </div>
             </Tooltip>
 
             {isSelected && (
               <Popup
                 className="custom-popup"
-                maxWidth={340}
+                maxWidth={360}
                 closeOnClick={false}
                 eventHandlers={{ remove: () => onSelect(null) }}
               >

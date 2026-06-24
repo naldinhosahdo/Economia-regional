@@ -1,4 +1,4 @@
-import { tierLabels, tierColors } from '../data/neighborhoods';
+import { tierLabels, tierColors, trendIcon, trendColor } from '../data/neighborhoods';
 
 const scoreColor = (score) => {
   if (score >= 80) return '#f59e0b';
@@ -7,15 +7,16 @@ const scoreColor = (score) => {
   return '#ef4444';
 };
 
-export default function Sidebar({ neighborhoods, activeLayer, onLayerChange, onNeighborhoodClick, selectedId }) {
-  const layers = [
-    { id: 'score', label: '💰 Score Geral', desc: 'Potencial econômico' },
-    { id: 'rent', label: '🏠 Aluguel', desc: 'Custo por m²' },
-    { id: 'delivery', label: '📦 Delivery', desc: 'Volume de entregas' },
-    { id: 'moto', label: '🏍️ Motoboys', desc: 'Concentração de apps' },
-    { id: 'gaps', label: '⚡ Gaps', desc: 'O que falta' },
-  ];
+const layers = [
+  { id: 'score', label: '💰 Score Econômico', desc: 'Potencial geral do bairro' },
+  { id: 'income', label: '👛 Renda Média', desc: 'Poder de compra dos moradores' },
+  { id: 'rent', label: '🏠 Aluguel', desc: 'Custo de instalação' },
+  { id: 'informal', label: '🏪 Economia Informal', desc: 'Concentração de trabalho informal' },
+  { id: 'trend', label: '📈 Tendência', desc: 'Crescimento ou retração' },
+  { id: 'employment', label: '👷 Emprego', desc: 'Nível de empregabilidade' },
+];
 
+export default function Sidebar({ neighborhoods, activeLayer, onLayerChange, onNeighborhoodClick, selectedId }) {
   const sorted = [...neighborhoods].sort((a, b) => b.score - a.score);
 
   return (
@@ -29,12 +30,15 @@ export default function Sidebar({ neighborhoods, activeLayer, onLayerChange, onN
             <div className="text-xs text-slate-500">Fortaleza · CE</div>
           </div>
         </div>
+        <div className="text-xs text-slate-600 mt-2 leading-relaxed">
+          Enxergue oportunidades econômicas em cada bairro
+        </div>
       </div>
 
       {/* Layer selector */}
       <div className="px-3 py-3 border-b border-slate-800">
         <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-2">Visualizar por</div>
-        <div className="space-y-1">
+        <div className="space-y-0.5">
           {layers.map(l => (
             <button
               key={l.id}
@@ -46,20 +50,20 @@ export default function Sidebar({ neighborhoods, activeLayer, onLayerChange, onN
               }`}
             >
               <div className="font-medium">{l.label}</div>
-              <div className="text-slate-500 text-xs">{l.desc}</div>
+              <div className="text-slate-600 text-xs">{l.desc}</div>
             </button>
           ))}
         </div>
       </div>
 
       {/* Legend */}
-      <div className="px-3 py-3 border-b border-slate-800">
-        <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-2">Legenda</div>
-        <div className="space-y-1">
+      <div className="px-3 py-2.5 border-b border-slate-800">
+        <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-2">Tipo de bairro</div>
+        <div className="grid grid-cols-2 gap-1">
           {Object.entries(tierLabels).map(([key, label]) => (
-            <div key={key} className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 rounded-full" style={{ background: tierColors[key] }} />
-              <span className="text-xs text-slate-400">{label}</span>
+            <div key={key} className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: tierColors[key] }} />
+              <span className="text-xs text-slate-500">{label}</span>
             </div>
           ))}
         </div>
@@ -67,8 +71,8 @@ export default function Sidebar({ neighborhoods, activeLayer, onLayerChange, onN
 
       {/* Rankings */}
       <div className="flex-1 overflow-y-auto px-3 py-3">
-        <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-2">Ranking de bairros</div>
-        <div className="space-y-1">
+        <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-2">Ranking econômico</div>
+        <div className="space-y-0.5">
           {sorted.map((n, i) => (
             <button
               key={n.id}
@@ -79,21 +83,27 @@ export default function Sidebar({ neighborhoods, activeLayer, onLayerChange, onN
                   : 'hover:bg-slate-800'
               }`}
             >
-              <span className="text-slate-600 text-xs w-4 font-mono">{i + 1}</span>
+              <span className="text-slate-700 text-xs w-4 font-mono flex-shrink-0">{i + 1}</span>
               <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: n.color }} />
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-medium text-slate-300 truncate">{n.name}</div>
-                <div className="text-xs text-slate-600">R${n.avgRent.toLocaleString('pt-BR')}/mês</div>
+                <div className="flex items-center gap-1">
+                  <span className="text-xs" style={{ color: trendColor[n.economyTrend] }}>
+                    {trendIcon[n.economyTrend]}
+                  </span>
+                  <span className="text-xs text-slate-600 truncate">{n.dominantActivity}</span>
+                </div>
               </div>
-              <div className="text-xs font-bold" style={{ color: scoreColor(n.score) }}>{n.score}</div>
+              <div className="text-xs font-bold flex-shrink-0" style={{ color: scoreColor(n.score) }}>
+                {n.score}
+              </div>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Footer */}
       <div className="px-4 py-3 border-t border-slate-800">
-        <div className="text-xs text-slate-600 text-center">Dados representativos · 2024</div>
+        <div className="text-xs text-slate-600 text-center">Clique no mapa para explorar</div>
       </div>
     </div>
   );
