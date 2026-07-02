@@ -56,7 +56,7 @@ export const neighborhoods = [
     ],
 
     opportunity: 'Turistas e moradores demandam serviços de concierge e experiências locais autênticas que ainda não existem no bairro',
-    color: '#f59e0b',
+    color: '#c98500',
   },
   {
     id: 'aldeota',
@@ -115,7 +115,7 @@ export const neighborhoods = [
     ],
 
     opportunity: 'Alta concentração de profissionais liberais sem espaço de coworking acessível — coworking com sala de reunião por hora tem fila de espera',
-    color: '#f59e0b',
+    color: '#c98500',
   },
   {
     id: 'centro',
@@ -174,7 +174,7 @@ export const neighborhoods = [
     ],
 
     opportunity: 'Conserto de celular com espera de 3h+ em todos os pontos — um serviço rápido e de qualidade domina o mercado',
-    color: '#3b82f6',
+    color: '#3987e5',
   },
   {
     id: 'benfica',
@@ -233,7 +233,7 @@ export const neighborhoods = [
     ],
 
     opportunity: 'Lavanderia self-service tem ROI de 14 meses — bairro universitário com 35k moradores e nenhuma no raio de 2km',
-    color: '#8b5cf6',
+    color: '#9085e9',
   },
   {
     id: 'parangaba',
@@ -292,7 +292,7 @@ export const neighborhoods = [
     ],
 
     opportunity: 'Academia low cost (R$50/mês) teria 800+ alunos imediatos — população quer se exercitar mas não tem onde',
-    color: '#10b981',
+    color: '#199e70',
   },
   {
     id: 'messejana',
@@ -351,7 +351,7 @@ export const neighborhoods = [
     ],
 
     opportunity: 'Aluguel subindo 9% ao ano — abrir clínica popular com consulta a R$30 atenderia demanda reprimida enorme',
-    color: '#10b981',
+    color: '#199e70',
   },
   {
     id: 'cocó',
@@ -410,7 +410,7 @@ export const neighborhoods = [
     ],
 
     opportunity: 'Bairro com maior crescimento imobiliário de Fortaleza — padaria artesanal com café teria ticket médio de R$35 e fila no fim de semana',
-    color: '#f59e0b',
+    color: '#c98500',
   },
   {
     id: 'barra-do-ceara',
@@ -469,7 +469,7 @@ export const neighborhoods = [
     ],
 
     opportunity: 'Mercado de internet fibra praticamente inexplorado — 60k moradores pagando caro por 3G ruim',
-    color: '#ef4444',
+    color: '#e66767',
   },
   {
     id: 'maracanau',
@@ -528,7 +528,7 @@ export const neighborhoods = [
     ],
 
     opportunity: 'Polo industrial sem hotel executivo — executivos de SP/RJ fazem viagens frequentes e dormem a 40km de distância',
-    color: '#6b7280',
+    color: '#898781',
   },
   {
     id: 'varjota',
@@ -587,7 +587,7 @@ export const neighborhoods = [
     ],
 
     opportunity: 'Bairro sem café diurno de qualidade — mesmo fluxo do jantar quer brunch e café da tarde aos fins de semana',
-    color: '#f59e0b',
+    color: '#c98500',
   },
   {
     id: 'mondubim',
@@ -646,7 +646,7 @@ export const neighborhoods = [
     ],
 
     opportunity: 'Alta densidade populacional sem correspondente bancário suficiente — fintech de microcrédito e conta digital tem demanda enorme',
-    color: '#ef4444',
+    color: '#e66767',
   },
   {
     id: 'edson-queiroz',
@@ -705,17 +705,17 @@ export const neighborhoods = [
     ],
 
     opportunity: 'Cluster de 5 faculdades sem incubadora de startups — centenas de projetos embrionários sem nenhum suporte estruturado',
-    color: '#8b5cf6',
+    color: '#9085e9',
   },
 ];
 
 export const tierColors = {
-  premium: '#f59e0b',
-  comercial: '#3b82f6',
-  universitario: '#8b5cf6',
-  residencial: '#10b981',
-  popular: '#ef4444',
-  industrial: '#6b7280',
+  premium: '#c98500',
+  comercial: '#3987e5',
+  universitario: '#9085e9',
+  residencial: '#199e70',
+  popular: '#e66767',
+  industrial: '#898781',
 };
 
 export const tierLabels = {
@@ -734,7 +734,7 @@ export const trendIcon = {
 };
 
 export const trendColor = {
-  crescendo: '#10b981',
-  estável: '#94a3b8',
-  retraindo: '#ef4444',
+  crescendo: '#199e70',
+  estável: '#898781',
+  retraindo: '#e66767',
 };

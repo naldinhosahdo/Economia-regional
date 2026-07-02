@@ -1,26 +1,21 @@
-import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Popup, Tooltip, useMap } from 'react-leaflet';
+import { useEffect } from 'react';
+import { MapContainer, TileLayer, CircleMarker, Tooltip, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import NeighborhoodPopup from './NeighborhoodPopup';
+
+// Sequential blue ramp (dark surface): darkest = lowest, lightest = highest
+const ramp = ['#184f95', '#1c5cab', '#256abf', '#2a78d6', '#3987e5', '#5598e7', '#6da7ec', '#86b6ef'];
 
 const informalToNum = (v) => {
   if (v.includes('muito alta')) return 1.0;
+  if (v.includes('muito baixa')) return 0.1;
   if (v.includes('alta')) return 0.75;
   if (v.includes('média')) return 0.5;
   if (v.includes('baixa')) return 0.25;
-  if (v.includes('muito baixa')) return 0.1;
   return 0.5;
 };
 
-const employmentToNum = (v) => {
-  const m = { 'alto': 1.0, 'médio': 0.55, 'baixo': 0.2 };
-  return m[v] ?? 0.5;
-};
-
-const trendToNum = (v) => {
-  const m = { 'crescendo': 1.0, 'estável': 0.5, 'retraindo': 0.1 };
-  return m[v] ?? 0.5;
-};
+const employmentToNum = (v) => ({ alto: 1.0, 'médio': 0.55, baixo: 0.2 }[v] ?? 0.5);
+const trendToNum = (v) => ({ crescendo: 1.0, 'estável': 0.5, retraindo: 0.1 }[v] ?? 0.5);
 
 const getLayerValue = (n, layer) => {
   switch (layer) {
@@ -34,95 +29,98 @@ const getLayerValue = (n, layer) => {
   }
 };
 
-// Green → Yellow → Red scale
-const valueToColor = (v) => {
-  if (v >= 0.7) return `rgb(${Math.round(80 + v * 170)}, ${Math.round(220 - v * 60)}, 60)`;
-  if (v >= 0.4) return `rgb(240, ${Math.round(150 + v * 80)}, 40)`;
-  return `rgb(230, ${Math.round(v * 120)}, 50)`;
+const layerLegend = {
+  score:      'Score econômico',
+  income:     'Renda média',
+  rent:       'Aluguel médio',
+  informal:   'Economia informal',
+  trend:      'Tendência econômica',
+  employment: 'Nível de emprego',
 };
 
-// For informal economy, higher = more red (warning)
-const informalColor = (v) => {
-  const r = Math.round(100 + v * 150);
-  const g = Math.round(200 - v * 150);
-  return `rgb(${r}, ${g}, 50)`;
-};
-
-const getColor = (n, layer) => {
-  const v = getLayerValue(n, layer);
-  if (layer === 'informal') return informalColor(v);
-  return valueToColor(v);
+const valueLabel = (n, layer) => {
+  switch (layer) {
+    case 'score':      return `Score ${n.score}`;
+    case 'income':     return `R$ ${n.avgIncome.toLocaleString('pt-BR')}/mês`;
+    case 'rent':       return `R$ ${n.avgRent.toLocaleString('pt-BR')}/mês`;
+    case 'informal':   return `Informal: ${n.informalEconomy}`;
+    case 'trend':      return n.economyTrend;
+    case 'employment': return `Emprego ${n.employmentRate}`;
+    default:           return '';
+  }
 };
 
 function FlyTo({ coords }) {
   const map = useMap();
   useEffect(() => {
-    if (coords) map.flyTo(coords, 14, { duration: 1.2 });
+    if (coords) map.flyTo(coords, 13.5, { duration: 0.9 });
   }, [coords, map]);
   return null;
 }
 
-export default function MapView({ neighborhoods, activeLayer, selectedNeighborhood, onSelect }) {
-  const [flyTo, setFlyTo] = useState(null);
-
+function InvalidateOnShow({ visible }) {
+  const map = useMap();
   useEffect(() => {
-    if (selectedNeighborhood) setFlyTo(selectedNeighborhood.coords);
-  }, [selectedNeighborhood]);
+    if (visible) setTimeout(() => map.invalidateSize(), 60);
+  }, [visible, map]);
+  return null;
+}
 
+export default function MapView({ neighborhoods, activeLayer, selected, onSelect, visible }) {
   return (
-    <MapContainer
-      center={[-3.7658, -38.5423]}
-      zoom={12}
-      style={{ height: '100%', width: '100%' }}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='© OpenStreetMap contributors'
-      />
-      <FlyTo coords={flyTo} />
+    <>
+      <MapContainer
+        center={[-3.7758, -38.5323]}
+        zoom={12}
+        style={{ height: '100%', width: '100%' }}
+        zoomControl={false}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution="© OpenStreetMap"
+        />
+        <FlyTo coords={selected?.coords} />
+        <InvalidateOnShow visible={visible} />
 
-      {neighborhoods.map((n) => {
-        const color = getColor(n, activeLayer);
-        const isSelected = selectedNeighborhood?.id === n.id;
-        const value = getLayerValue(n, activeLayer);
+        {neighborhoods.map((n) => {
+          const v = getLayerValue(n, activeLayer);
+          const fill = ramp[Math.min(ramp.length - 1, Math.floor(v * ramp.length))];
+          const isSel = selected?.id === n.id;
 
-        return (
-          <CircleMarker
-            key={n.id}
-            center={n.coords}
-            radius={isSelected ? 30 : Math.round(16 + value * 12)}
-            pathOptions={{
-              fillColor: color,
-              fillOpacity: isSelected ? 0.9 : 0.7,
-              color: isSelected ? '#ffffff' : color,
-              weight: isSelected ? 2.5 : 1,
-            }}
-            eventHandlers={{ click: () => onSelect(n) }}
-          >
-            <Tooltip
-              direction="top"
-              className="neighborhood-tooltip"
-              offset={[0, -14]}
+          return (
+            <CircleMarker
+              key={n.id}
+              center={n.coords}
+              radius={isSel ? 26 : 13 + v * 12}
+              pathOptions={{
+                fillColor: fill,
+                fillOpacity: 0.82,
+                color: isSel ? '#ffffff' : 'rgba(255,255,255,0.35)',
+                weight: isSel ? 2.5 : 1,
+              }}
+              eventHandlers={{ click: () => onSelect(n) }}
             >
-              <div>
-                <strong>{n.name}</strong>
-                <div style={{ fontSize: 11, color: '#94a3b8' }}>{n.dominantActivity}</div>
-              </div>
-            </Tooltip>
+              <Tooltip direction="top" className="neighborhood-tooltip" offset={[0, -12]}>
+                <div>
+                  <strong>{n.name}</strong>
+                  <div style={{ fontSize: 11, color: '#c3c2b7', fontWeight: 400 }}>
+                    {valueLabel(n, activeLayer)}
+                  </div>
+                </div>
+              </Tooltip>
+            </CircleMarker>
+          );
+        })}
+      </MapContainer>
 
-            {isSelected && (
-              <Popup
-                className="custom-popup"
-                maxWidth={360}
-                closeOnClick={false}
-                eventHandlers={{ remove: () => onSelect(null) }}
-              >
-                <NeighborhoodPopup data={n} />
-              </Popup>
-            )}
-          </CircleMarker>
-        );
-      })}
-    </MapContainer>
+      <div className="map-legend">
+        <div className="map-legend-title">{layerLegend[activeLayer]}</div>
+        <div className="map-legend-bar" />
+        <div className="map-legend-ends">
+          <span>menor</span>
+          <span>maior</span>
+        </div>
+      </div>
+    </>
   );
 }
