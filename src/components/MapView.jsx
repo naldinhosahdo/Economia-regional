@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Tooltip, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// Sequential blue ramp (dark surface): darkest = lowest, lightest = highest
-const ramp = ['#184f95', '#1c5cab', '#256abf', '#2a78d6', '#3987e5', '#5598e7', '#6da7ec', '#86b6ef'];
+// Warm sequential ramp: yellow = lowest → deep red = highest
+const ramp = ['#f7e06e', '#f8cf52', '#f9bc3d', '#f9a52f', '#f68a26', '#ef6c24', '#e34b26', '#d03028'];
 
 const informalToNum = (v) => {
   if (v.includes('muito alta')) return 1.0;
@@ -91,11 +91,11 @@ export default function MapView({ neighborhoods, activeLayer, selected, onSelect
             <CircleMarker
               key={n.id}
               center={n.coords}
-              radius={isSel ? 26 : 13 + v * 12}
+              radius={isSel ? 22 : 8 + v * 9}
               pathOptions={{
                 fillColor: fill,
-                fillOpacity: 0.82,
-                color: isSel ? '#ffffff' : 'rgba(255,255,255,0.35)',
+                fillOpacity: 0.85,
+                color: isSel ? '#ffffff' : 'rgba(0,0,0,0.4)',
                 weight: isSel ? 2.5 : 1,
               }}
               eventHandlers={{ click: () => onSelect(n) }}

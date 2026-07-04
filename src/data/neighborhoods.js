@@ -738,3 +738,161 @@ export const trendColor = {
   estável: '#898781',
   retraindo: '#e66767',
 };
+
+// ---------------------------------------------------------------------------
+// Bairros adicionais — dados básicos próprios + perfis de consumo por tipo
+// ---------------------------------------------------------------------------
+
+const tierProfiles = {
+  premium: {
+    economyProfile: 'Bairro de renda alta com forte setor de serviços, gastronomia e comércio de padrão elevado',
+    topPurchases: [
+      { name: 'Alimentação fora de casa', freq: 'diário' },
+      { name: 'Academia e bem-estar', freq: 'semanal' },
+      { name: 'Serviços de beleza e estética', freq: 'semanal' },
+      { name: 'Roupas e acessórios de marca', freq: 'mensal' },
+      { name: 'Lazer e experiências', freq: 'mensal' },
+    ],
+    topProducts: ['Comida saudável e orgânicos', 'Vinhos e importados', 'Cosméticos premium', 'Roupas fitness', 'Eletrônicos'],
+    topServices: ['Restaurantes e cafés', 'Academias e studios', 'Salão de beleza e estética', 'Clínicas médicas', 'Pet care'],
+    sideHustles: ['Aulas particulares de idiomas', 'Personal trainer autônomo', 'Aluguel por temporada (Airbnb)', 'Fotografia de eventos', 'Consultorias autônomas'],
+    mainProblems: ['Custo de vida alto', 'Trânsito nos horários de pico', 'Falta de estacionamento', 'Especulação imobiliária', 'Pouco comércio popular'],
+  },
+  comercial: {
+    economyProfile: 'Polo de comércio com grande fluxo diário de pessoas e forte presença de economia informal',
+    topPurchases: [
+      { name: 'Roupas e calçados populares', freq: 'quinzenal' },
+      { name: 'Alimentação rápida', freq: 'diário' },
+      { name: 'Eletrônicos e acessórios', freq: 'mensal' },
+      { name: 'Produtos para revenda', freq: 'semanal' },
+      { name: 'Materiais diversos', freq: 'mensal' },
+    ],
+    topProducts: ['Roupas no atacado', 'Celulares e capinhas', 'Comida de rua', 'Utilidades domésticas', 'Papelaria'],
+    topServices: ['Conserto de celular', 'Fotocópia e impressão', 'Costura e ajustes', 'Lotéricas e bancos', 'Transporte de mercadoria'],
+    sideHustles: ['Vendedor ambulante', 'Venda de quentinha', 'Frete com veículo próprio', 'Revenda de mercadorias', 'Serviços de entrega'],
+    mainProblems: ['Insegurança e furtos', 'Calçadas ocupadas', 'Trânsito caótico', 'Falta de limpeza urbana', 'Estacionamento escasso'],
+  },
+  universitario: {
+    economyProfile: 'Bairro movido pela economia estudantil, com consumo intenso durante o período letivo',
+    topPurchases: [
+      { name: 'Lanches e refeições baratas', freq: 'diário' },
+      { name: 'Impressões e materiais', freq: 'semanal' },
+      { name: 'Transporte por aplicativo', freq: 'diário' },
+      { name: 'Bebidas e bares', freq: 'semanal' },
+      { name: 'Roupas econômicas', freq: 'mensal' },
+    ],
+    topProducts: ['Marmita e comida por quilo', 'Apostilas e fotocópias', 'Material escolar', 'Cerveja e petiscos', 'Roupas de brechó'],
+    topServices: ['Lanchonetes e trailers', 'Reprografia', 'Aulas de reforço', 'Quartos e pensões', 'Bares'],
+    sideHustles: ['Aulas particulares', 'Venda de resumos e apostilas', 'Garçom nos fins de semana', 'Freelance de design e TI', 'Digitação de trabalhos'],
+    mainProblems: ['Insegurança noturna', 'Falta de moradia estudantil', 'Transporte lotado', 'Barulho de bares', 'Poucos espaços de estudo'],
+  },
+  residencial: {
+    economyProfile: 'Bairro residencial com comércio de proximidade e serviços voltados às famílias locais',
+    topPurchases: [
+      { name: 'Alimentação no mercadinho', freq: 'diário' },
+      { name: 'Produtos de limpeza e higiene', freq: 'semanal' },
+      { name: 'Medicamentos', freq: 'semanal' },
+      { name: 'Roupas e calçados', freq: 'mensal' },
+      { name: 'Material escolar', freq: 'mensal' },
+    ],
+    topProducts: ['Alimentos básicos', 'Produtos de limpeza', 'Remédios genéricos', 'Pão e laticínios', 'Gás de cozinha'],
+    topServices: ['Mercadinhos e padarias', 'Salão de beleza popular', 'Farmácias', 'Oficinas e borracharias', 'Escolas e reforço'],
+    sideHustles: ['Venda de salgados e bolos', 'Revenda de cosméticos', 'Serviços de pedreiro e pintor', 'Costura em casa', 'Cuidado de crianças e idosos'],
+    mainProblems: ['Transporte público precário', 'Falta de lazer', 'Ruas mal iluminadas', 'Posto de saúde distante', 'Desemprego'],
+  },
+  popular: {
+    economyProfile: 'Bairro popular de alta densidade com forte economia informal e comércio de subsistência',
+    topPurchases: [
+      { name: 'Alimentação básica', freq: 'diário' },
+      { name: 'Produtos de higiene', freq: 'semanal' },
+      { name: 'Crédito de celular', freq: 'semanal' },
+      { name: 'Roupas populares', freq: 'mensal' },
+      { name: 'Botijão de gás', freq: 'mensal' },
+    ],
+    topProducts: ['Arroz, feijão e básicos', 'Produtos de limpeza', 'Chip e recarga', 'Roupas de sacola', 'Comida pronta barata'],
+    topServices: ['Mercearia de esquina', 'Barbearia popular', 'Lotérica e correspondente', 'Conserto de bicicleta e moto', 'Igrejas e assistência'],
+    sideHustles: ['Venda de doces e salgados', 'Diarista e faxineira', 'Manicure em casa', 'Coleta de recicláveis', 'Bicos de obra e pintura'],
+    mainProblems: ['Desemprego alto', 'Falta de saneamento', 'Violência', 'Acesso difícil a crédito', 'Escolas sem estrutura'],
+  },
+  industrial: {
+    economyProfile: 'Área industrial com população trabalhadora e serviços voltados ao setor produtivo',
+    topPurchases: [
+      { name: 'Marmita e refeição rápida', freq: 'diário' },
+      { name: 'Equipamentos de trabalho', freq: 'mensal' },
+      { name: 'Transporte', freq: 'diário' },
+      { name: 'Roupas básicas', freq: 'mensal' },
+      { name: 'Eletrodomésticos', freq: 'trimestral' },
+    ],
+    topProducts: ['Marmitas', 'EPIs e ferramentas', 'Uniformes', 'Autopeças', 'Eletrodomésticos populares'],
+    topServices: ['Refeitórios', 'Transporte fretado', 'Manutenção industrial', 'Logística', 'RH e seleção'],
+    sideHustles: ['Venda de marmita', 'Transporte de funcionários', 'Revenda de uniformes', 'Borracharia', 'Chaveiro'],
+    mainProblems: ['Poluição', 'Trânsito de caminhões', 'Pouco lazer', 'Transporte caro', 'Barulho'],
+  },
+};
+
+const extraBairros = [
+  // — Litoral / renda alta —
+  { id: 'mucuripe', name: 'Mucuripe', coords: [-3.7225, -38.4790], score: 84, tier: 'premium', population: 13000, avgIncome: 6800, avgRent: 2900, rentTrend: 6, economyTrend: 'crescendo', dominantActivity: 'Pesca, gastronomia e orla', employmentRate: 'alto', informalEconomy: 'média (~20%)', opportunity: 'Feira do peixe movimenta milhares aos fins de semana — falta café e conveniência no entorno' },
+  { id: 'praia-de-iracema', name: 'Praia de Iracema', coords: [-3.7205, -38.5155], score: 80, tier: 'premium', population: 8000, avgIncome: 5600, avgRent: 2600, rentTrend: 7, economyTrend: 'crescendo', dominantActivity: 'Turismo, bares e cultura', employmentRate: 'alto', informalEconomy: 'média (~25%)', opportunity: 'Polo de vida noturna renascendo — hostels e experiências para turistas têm alta procura' },
+  { id: 'dionisio-torres', name: 'Dionísio Torres', coords: [-3.7450, -38.5140], score: 86, tier: 'premium', population: 16000, avgIncome: 7900, avgRent: 3600, rentTrend: 6, economyTrend: 'crescendo', dominantActivity: 'Residencial de alto padrão', employmentRate: 'alto', informalEconomy: 'baixa (~10%)', opportunity: 'Moradores idosos de alta renda sem serviços de cuidado domiciliar suficientes' },
+  { id: 'papicu', name: 'Papicu', coords: [-3.7400, -38.4660], score: 78, tier: 'comercial', population: 20000, avgIncome: 4800, avgRent: 2300, rentTrend: 5, economyTrend: 'crescendo', dominantActivity: 'Comércio e serviços', employmentRate: 'alto', informalEconomy: 'média (~22%)', opportunity: 'Terminal do Papicu gera fluxo enorme — quiosques de conveniência e food service em falta' },
+  { id: 'guararapes', name: 'Guararapes', coords: [-3.7680, -38.4800], score: 87, tier: 'premium', population: 9000, avgIncome: 9800, avgRent: 3900, rentTrend: 9, economyTrend: 'crescendo', dominantActivity: 'Residencial de luxo', employmentRate: 'alto', informalEconomy: 'muito baixa (~8%)', opportunity: 'Condomínios de luxo demandam serviços premium de pet, jardinagem e manutenção' },
+  { id: 'luciano-cavalcante', name: 'Eng. Luciano Cavalcante', coords: [-3.7750, -38.4880], score: 82, tier: 'premium', population: 15000, avgIncome: 6900, avgRent: 3100, rentTrend: 8, economyTrend: 'crescendo', dominantActivity: 'Corporativo e residencial', employmentRate: 'alto', informalEconomy: 'baixa (~12%)', opportunity: 'Novo eixo corporativo — restaurantes executivos para almoço têm fila diária' },
+  { id: 'salinas', name: 'Salinas', coords: [-3.7600, -38.4780], score: 83, tier: 'premium', population: 7000, avgIncome: 8200, avgRent: 3400, rentTrend: 7, economyTrend: 'crescendo', dominantActivity: 'Residencial alto padrão', employmentRate: 'alto', informalEconomy: 'baixa (~10%)', opportunity: 'Bairro valorizado sem padaria artesanal nem hortifrúti premium' },
+  { id: 'praia-do-futuro', name: 'Praia do Futuro', coords: [-3.7480, -38.4440], score: 70, tier: 'comercial', population: 10000, avgIncome: 2600, avgRent: 1150, rentTrend: 6, economyTrend: 'crescendo', dominantActivity: 'Barracas de praia e turismo', employmentRate: 'médio', informalEconomy: 'alta (~40%)', opportunity: 'Barracas famosas lotadas — transporte e estacionamento organizados são o gargalo' },
+
+  // — Centro-sul / classe média —
+  { id: 'fatima', name: 'Fátima', coords: [-3.7520, -38.5300], score: 76, tier: 'residencial', population: 22000, avgIncome: 4100, avgRent: 1900, rentTrend: 5, economyTrend: 'crescendo', dominantActivity: 'Residencial e serviços', employmentRate: 'alto', informalEconomy: 'baixa (~18%)', opportunity: 'Bairro central residencial — cafeterias e estúdios de pilates abrem e lotam' },
+  { id: 'joaquim-tavora', name: 'Joaquim Távora', coords: [-3.7500, -38.5200], score: 74, tier: 'residencial', population: 25000, avgIncome: 3700, avgRent: 1700, rentTrend: 4, economyTrend: 'estável', dominantActivity: 'Residencial e comércio', employmentRate: 'médio', informalEconomy: 'média (~24%)', opportunity: 'Rua de gastronomia crescendo — delivery de comida saudável ainda raro' },
+  { id: 'sao-joao-do-tauape', name: 'São João do Tauape', coords: [-3.7520, -38.5050], score: 71, tier: 'residencial', population: 24000, avgIncome: 2900, avgRent: 1300, rentTrend: 5, economyTrend: 'crescendo', dominantActivity: 'Comércio e serviços', employmentRate: 'médio', informalEconomy: 'média (~30%)', opportunity: 'Corredor da Av. Pontes Vieira em expansão — salas pequenas para clínicas em falta' },
+  { id: 'cidade-dos-funcionarios', name: 'Cidade dos Funcionários', coords: [-3.7900, -38.4950], score: 73, tier: 'residencial', population: 20000, avgIncome: 3800, avgRent: 1600, rentTrend: 6, economyTrend: 'crescendo', dominantActivity: 'Residencial e serviços', employmentRate: 'alto', informalEconomy: 'baixa (~18%)', opportunity: 'Famílias jovens em expansão — escolas infantis com lista de espera' },
+  { id: 'cambeba', name: 'Cambeba', coords: [-3.8050, -38.4850], score: 72, tier: 'residencial', population: 18000, avgIncome: 3600, avgRent: 1500, rentTrend: 7, economyTrend: 'crescendo', dominantActivity: 'Administrativo e residencial', employmentRate: 'alto', informalEconomy: 'baixa (~16%)', opportunity: 'Centro administrativo do estado — almoço executivo e cafés têm demanda reprimida' },
+  { id: 'sapiranga', name: 'Sapiranga', coords: [-3.7900, -38.4620], score: 67, tier: 'residencial', population: 28000, avgIncome: 2700, avgRent: 1200, rentTrend: 7, economyTrend: 'crescendo', dominantActivity: 'Residencial em valorização', employmentRate: 'médio', informalEconomy: 'média (~30%)', opportunity: 'Rota para o Iguatemi e praias — clínicas e escolas particulares em expansão' },
+  { id: 'parquelandia', name: 'Parquelândia', coords: [-3.7350, -38.5550], score: 69, tier: 'residencial', population: 22000, avgIncome: 2800, avgRent: 1250, rentTrend: 4, economyTrend: 'estável', dominantActivity: 'Residencial', employmentRate: 'médio', informalEconomy: 'média (~26%)', opportunity: 'Perto do North Shopping — estacionamentos e lava-jatos sempre cheios' },
+  { id: 'maraponga', name: 'Maraponga', coords: [-3.7860, -38.5660], score: 66, tier: 'residencial', population: 12000, avgIncome: 2500, avgRent: 1100, rentTrend: 5, economyTrend: 'crescendo', dominantActivity: 'Residencial com lagoa', employmentRate: 'médio', informalEconomy: 'média (~28%)', opportunity: 'Lagoa da Maraponga atrai famílias aos fins de semana — food park teria público cativo' },
+
+  // — Comércio popular —
+  { id: 'montese', name: 'Montese', coords: [-3.7600, -38.5450], score: 68, tier: 'comercial', population: 26000, avgIncome: 2300, avgRent: 1000, rentTrend: 4, economyTrend: 'estável', dominantActivity: 'Comércio popular têxtil', employmentRate: 'médio', informalEconomy: 'alta (~42%)', opportunity: 'Polo de confecção e tecidos — serviços de e-commerce para lojistas praticamente inexistem' },
+  { id: 'antonio-bezerra', name: 'Antônio Bezerra', coords: [-3.7350, -38.5880], score: 62, tier: 'comercial', population: 28000, avgIncome: 1900, avgRent: 850, rentTrend: 3, economyTrend: 'estável', dominantActivity: 'Comércio e terminal', employmentRate: 'médio', informalEconomy: 'alta (~45%)', opportunity: 'Terminal movimenta dezenas de milhares por dia — café da manhã e marmita têm demanda gigante' },
+
+  // — Universitários —
+  { id: 'pici', name: 'Pici', coords: [-3.7450, -38.5650], score: 58, tier: 'universitario', population: 42000, avgIncome: 1500, avgRent: 700, rentTrend: 3, economyTrend: 'estável', dominantActivity: 'Universidade e comércio local', employmentRate: 'médio', informalEconomy: 'alta (~40%)', opportunity: 'Campus da UFC com 20 mil alunos — xerox, lanches e quartos para alugar sempre lotados' },
+  { id: 'itaperi', name: 'Itaperi', coords: [-3.7880, -38.5480], score: 57, tier: 'universitario', population: 30000, avgIncome: 1600, avgRent: 750, rentTrend: 4, economyTrend: 'estável', dominantActivity: 'Universidade e residencial', employmentRate: 'médio', informalEconomy: 'alta (~38%)', opportunity: 'Entorno da UECE sem lanchonetes suficientes no turno da noite' },
+
+  // — Residencial médio/oeste —
+  { id: 'rodolfo-teofilo', name: 'Rodolfo Teófilo', coords: [-3.7450, -38.5480], score: 63, tier: 'residencial', population: 20000, avgIncome: 2100, avgRent: 950, rentTrend: 3, economyTrend: 'estável', dominantActivity: 'Residencial e saúde', employmentRate: 'médio', informalEconomy: 'média (~30%)', opportunity: 'Complexo hospitalar ao lado — hospedagem para acompanhantes de pacientes em falta' },
+  { id: 'amadeu-furtado', name: 'Amadeu Furtado', coords: [-3.7400, -38.5450], score: 64, tier: 'residencial', population: 12000, avgIncome: 2300, avgRent: 1000, rentTrend: 3, economyTrend: 'estável', dominantActivity: 'Residencial', employmentRate: 'médio', informalEconomy: 'média (~28%)', opportunity: 'Corredor universitário — quitandas e restaurantes por quilo prosperam' },
+  { id: 'monte-castelo', name: 'Monte Castelo', coords: [-3.7250, -38.5480], score: 61, tier: 'residencial', population: 14000, avgIncome: 2000, avgRent: 900, rentTrend: 2, economyTrend: 'estável', dominantActivity: 'Comércio de bairro', employmentRate: 'médio', informalEconomy: 'alta (~35%)', opportunity: 'Tradição em móveis e reformas — marcenaria sob medida com pouca concorrência' },
+  { id: 'jacarecanga', name: 'Jacarecanga', coords: [-3.7170, -38.5450], score: 56, tier: 'residencial', population: 13000, avgIncome: 1800, avgRent: 800, rentTrend: 3, economyTrend: 'estável', dominantActivity: 'Residencial histórico', employmentRate: 'médio', informalEconomy: 'alta (~36%)', opportunity: 'Casarões históricos baratos — potencial para estúdios criativos e coworkings' },
+  { id: 'vila-uniao', name: 'Vila União', coords: [-3.7620, -38.5350], score: 62, tier: 'residencial', population: 15000, avgIncome: 2200, avgRent: 950, rentTrend: 3, economyTrend: 'estável', dominantActivity: 'Residencial', employmentRate: 'médio', informalEconomy: 'média (~30%)', opportunity: 'Próximo a grandes avenidas — autopeças e oficinas em crescimento' },
+  { id: 'aerolandia', name: 'Aerolândia', coords: [-3.7750, -38.5200], score: 59, tier: 'residencial', population: 12000, avgIncome: 1900, avgRent: 850, rentTrend: 4, economyTrend: 'estável', dominantActivity: 'Residencial e logística', employmentRate: 'médio', informalEconomy: 'alta (~34%)', opportunity: 'Margem da BR-116 — pontos de apoio a caminhoneiros escassos' },
+  { id: 'passare', name: 'Passaré', coords: [-3.7980, -38.5450], score: 55, tier: 'residencial', population: 40000, avgIncome: 1600, avgRent: 720, rentTrend: 5, economyTrend: 'crescendo', dominantActivity: 'Residencial popular', employmentRate: 'médio', informalEconomy: 'alta (~44%)', opportunity: 'Conjuntos habitacionais novos — pet shops e farmácias ainda não chegaram' },
+  { id: 'jardim-das-oliveiras', name: 'Jardim das Oliveiras', coords: [-3.7800, -38.5050], score: 60, tier: 'residencial', population: 30000, avgIncome: 1900, avgRent: 850, rentTrend: 4, economyTrend: 'estável', dominantActivity: 'Residencial popular', employmentRate: 'médio', informalEconomy: 'alta (~40%)', opportunity: 'Densidade alta sem academia de baixo custo num raio de 1,5 km' },
+  { id: 'cajazeiras', name: 'Cajazeiras', coords: [-3.8120, -38.5080], score: 58, tier: 'residencial', population: 25000, avgIncome: 1700, avgRent: 780, rentTrend: 5, economyTrend: 'crescendo', dominantActivity: 'Residencial popular', employmentRate: 'médio', informalEconomy: 'alta (~42%)', opportunity: 'Crescimento acelerado perto do Castelão — material de construção bombando' },
+  { id: 'lagoa-redonda', name: 'Lagoa Redonda', coords: [-3.8220, -38.4650], score: 61, tier: 'residencial', population: 35000, avgIncome: 2000, avgRent: 900, rentTrend: 8, economyTrend: 'crescendo', dominantActivity: 'Residencial em expansão', employmentRate: 'médio', informalEconomy: 'alta (~38%)', opportunity: 'Loteamentos novos todo ano — mercadinhos e padarias não acompanham o ritmo' },
+  { id: 'serrinha', name: 'Serrinha', coords: [-3.7800, -38.5500], score: 52, tier: 'residencial', population: 33000, avgIncome: 1400, avgRent: 650, rentTrend: 2, economyTrend: 'estável', dominantActivity: 'Residencial popular', employmentRate: 'baixo', informalEconomy: 'alta (~45%)', opportunity: 'Vizinho ao aeroporto e à UECE — hospedagem econômica tem procura constante' },
+  { id: 'henrique-jorge', name: 'Henrique Jorge', coords: [-3.7550, -38.5800], score: 54, tier: 'residencial', population: 28000, avgIncome: 1450, avgRent: 620, rentTrend: 3, economyTrend: 'estável', dominantActivity: 'Residencial', employmentRate: 'médio', informalEconomy: 'alta (~44%)', opportunity: 'Comércio da Av. João Pessoa — lojas de variedades prosperam' },
+  { id: 'joquei-clube', name: 'Jóquei Clube', coords: [-3.7650, -38.5750], score: 57, tier: 'residencial', population: 18000, avgIncome: 1700, avgRent: 760, rentTrend: 3, economyTrend: 'estável', dominantActivity: 'Residencial', employmentRate: 'médio', informalEconomy: 'alta (~40%)', opportunity: 'Antiga área do jóquei em reurbanização — novos negócios chegando antes da valorização' },
+  { id: 'bela-vista', name: 'Bela Vista', coords: [-3.7480, -38.5600], score: 58, tier: 'residencial', population: 17000, avgIncome: 1750, avgRent: 780, rentTrend: 3, economyTrend: 'estável', dominantActivity: 'Residencial', employmentRate: 'médio', informalEconomy: 'média (~32%)', opportunity: 'Entre a UFC e o North Shopping — kitnets para estudantes com procura alta' },
+
+  // — Leste popular / porto —
+  { id: 'vicente-pinzon', name: 'Vicente Pinzón', coords: [-3.7220, -38.4650], score: 53, tier: 'popular', population: 45000, avgIncome: 1400, avgRent: 640, rentTrend: 4, economyTrend: 'estável', dominantActivity: 'Residencial popular', employmentRate: 'baixo', informalEconomy: 'muito alta (~50%)', opportunity: 'Entre bairros ricos e o porto — serviços domésticos e de manutenção com demanda garantida' },
+  { id: 'cais-do-porto', name: 'Cais do Porto', coords: [-3.7100, -38.4680], score: 50, tier: 'popular', population: 22000, avgIncome: 1300, avgRent: 580, rentTrend: 2, economyTrend: 'estável', dominantActivity: 'Portuário', employmentRate: 'médio', informalEconomy: 'alta (~46%)', opportunity: 'Movimento do porto — refeições rápidas para trabalhadores em turnos' },
+  { id: 'sabiaguaba', name: 'Sabiaguaba', coords: [-3.7750, -38.4380], score: 54, tier: 'popular', population: 5000, avgIncome: 1500, avgRent: 680, rentTrend: 9, economyTrend: 'crescendo', dominantActivity: 'Ecoturismo e praia', employmentRate: 'baixo', informalEconomy: 'muito alta (~55%)', opportunity: 'Dunas e praia preservadas — passeios ecológicos e barracas sustentáveis quase sem concorrência' },
+
+  // — Grande oeste / sul popular —
+  { id: 'pirambu', name: 'Pirambu', coords: [-3.7000, -38.5550], score: 46, tier: 'popular', population: 65000, avgIncome: 1000, avgRent: 420, rentTrend: 1, economyTrend: 'estável', dominantActivity: 'Comunidade litorânea', employmentRate: 'baixo', informalEconomy: 'muito alta (~65%)', opportunity: 'Grande Pirambu tem economia própria — microcrédito e capacitação profissional quase ausentes' },
+  { id: 'bom-jardim', name: 'Bom Jardim', coords: [-3.7880, -38.5980], score: 44, tier: 'popular', population: 110000, avgIncome: 1050, avgRent: 480, rentTrend: 2, economyTrend: 'estável', dominantActivity: 'Comércio popular', employmentRate: 'baixo', informalEconomy: 'muito alta (~62%)', opportunity: 'Um dos maiores bairros da cidade — cursos profissionalizantes têm fila de espera' },
+  { id: 'granja-portugal', name: 'Granja Portugal', coords: [-3.7800, -38.5900], score: 45, tier: 'popular', population: 55000, avgIncome: 1100, avgRent: 500, rentTrend: 2, economyTrend: 'estável', dominantActivity: 'Residencial popular', employmentRate: 'baixo', informalEconomy: 'muito alta (~58%)', opportunity: 'Comércio de esquina forte — atacarejo de vizinhança seria pioneiro' },
+  { id: 'conjunto-ceara', name: 'Conjunto Ceará', coords: [-3.7750, -38.6070], score: 56, tier: 'popular', population: 85000, avgIncome: 1500, avgRent: 680, rentTrend: 3, economyTrend: 'estável', dominantActivity: 'Conjunto habitacional', employmentRate: 'médio', informalEconomy: 'alta (~45%)', opportunity: 'População enorme e fiel ao comércio local — hamburgueria artesanal viraria febre' },
+  { id: 'jangurussu', name: 'Jangurussu', coords: [-3.8350, -38.5200], score: 47, tier: 'popular', population: 75000, avgIncome: 1150, avgRent: 520, rentTrend: 4, economyTrend: 'crescendo', dominantActivity: 'Residencial popular', employmentRate: 'baixo', informalEconomy: 'muito alta (~56%)', opportunity: 'Crescimento habitacional forte — creches particulares acessíveis em falta' },
+  { id: 'barroso', name: 'Barroso', coords: [-3.8220, -38.5180], score: 49, tier: 'popular', population: 45000, avgIncome: 1250, avgRent: 550, rentTrend: 3, economyTrend: 'estável', dominantActivity: 'Residencial popular', employmentRate: 'baixo', informalEconomy: 'alta (~50%)', opportunity: 'Sem opções de lazer pago — quadras society e buffets infantis lotariam' },
+  { id: 'vila-velha', name: 'Vila Velha', coords: [-3.7000, -38.6000], score: 48, tier: 'popular', population: 60000, avgIncome: 1200, avgRent: 530, rentTrend: 2, economyTrend: 'estável', dominantActivity: 'Residencial popular', employmentRate: 'baixo', informalEconomy: 'muito alta (~52%)', opportunity: 'Praia da Barra próxima — pesca e turismo popular sem infraestrutura de apoio' },
+  { id: 'siqueira', name: 'Siqueira', coords: [-3.7950, -38.6150], score: 43, tier: 'popular', population: 35000, avgIncome: 1000, avgRent: 450, rentTrend: 2, economyTrend: 'estável', dominantActivity: 'Periferia em consolidação', employmentRate: 'baixo', informalEconomy: 'muito alta (~60%)', opportunity: 'Terminal novo do Siqueira — comércio de passagem ainda engatinhando' },
+  { id: 'canindezinho', name: 'Canindezinho', coords: [-3.7920, -38.5820], score: 44, tier: 'popular', population: 42000, avgIncome: 1080, avgRent: 470, rentTrend: 3, economyTrend: 'estável', dominantActivity: 'Residencial popular', employmentRate: 'baixo', informalEconomy: 'muito alta (~58%)', opportunity: 'Feira local forte — logística de entrega para feirantes é oportunidade aberta' },
+];
+
+for (const b of extraBairros) {
+  const profile = tierProfiles[b.tier];
+  neighborhoods.push({ ...profile, ...b, color: tierColors[b.tier] });
+}
