@@ -42,22 +42,36 @@ const QUERY = `[out:json][timeout:180];
 );
 out center tags;`;
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 async function fetchOverpass() {
-  for (const url of ENDPOINTS) {
-    try {
-      console.log(`Trying ${url} ...`);
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'data=' + encodeURIComponent(QUERY),
-        signal: AbortSignal.timeout(200_000),
-      });
-      if (!res.ok) { console.log(`  status ${res.status}, trying next`); continue; }
-      const json = await res.json();
-      if (json.elements?.length) return json.elements;
-      console.log('  empty response, trying next');
-    } catch (e) {
-      console.log(`  failed: ${e.message}`);
+  // OSM servers require an identifying User-Agent; 429s are retried on a
+  // second round after a pause.
+  for (let round = 0; round < 3; round++) {
+    if (round > 0) {
+      console.log('All endpoints busy — waiting 45s before retrying...');
+      await sleep(45_000);
+    }
+    for (const url of ENDPOINTS) {
+      try {
+        console.log(`Trying ${url} ...`);
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'User-Agent': 'MoneyMaps-Fortaleza/1.0 (+https://github.com/naldinhosahdo/Economia-regional)',
+            'Accept': 'application/json',
+          },
+          body: 'data=' + encodeURIComponent(QUERY),
+          signal: AbortSignal.timeout(200_000),
+        });
+        if (!res.ok) { console.log(`  status ${res.status}, trying next`); continue; }
+        const json = await res.json();
+        if (json.elements?.length) return json.elements;
+        console.log('  empty response, trying next');
+      } catch (e) {
+        console.log(`  failed: ${e.message}`);
+      }
     }
   }
   return null;
