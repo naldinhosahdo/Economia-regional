@@ -1,5 +1,43 @@
 import { useState } from 'react';
 import { tierLabels, tierColors, trendIcon, trendColor } from '../data/neighborhoods';
+import realData from '../data/real-data.json';
+
+function RealDataSection({ id }) {
+  const info = realData.byNeighborhood?.[id];
+  if (!info || !realData.updatedAt) return null;
+
+  const labels = realData.categoryLabels;
+  const entries = Object.entries(info.counts).filter(([cat]) => (realData.cityTotals?.[cat] ?? 0) >= 10);
+  if (!entries.length) return null;
+  const updated = new Date(realData.updatedAt).toLocaleDateString('pt-BR', { month: '2-digit', year: 'numeric' });
+
+  return (
+    <div className="realdata">
+      <div className="section-label">📊 Negócios reais mapeados</div>
+      <div className="realdata-grid">
+        {entries.map(([cat, count]) => (
+          <div key={cat} className={`realdata-cell ${count === 0 ? 'realdata-zero' : ''}`}>
+            <span className="realdata-count">{count}</span>
+            <span className="realdata-cat">{labels[cat]}</span>
+          </div>
+        ))}
+      </div>
+      {info.gaps.length > 0 && (
+        <>
+          <div className="section-label" style={{ color: 'var(--accent-ink)' }}>⚡ Gaps reais — abaixo da média da cidade</div>
+          <div className="pill-wrap">
+            {info.gaps.map((g) => (
+              <span key={g} className="pill pill-gap">{labels[g]}</span>
+            ))}
+          </div>
+        </>
+      )}
+      <div className="realdata-source">
+        Fonte: {realData.source} · atualizado {updated}. Contagem colaborativa — pode subestimar o total real.
+      </div>
+    </div>
+  );
+}
 
 const tabs = [
   { id: 'buy', label: 'Compras' },
@@ -67,9 +105,11 @@ export default function BottomSheet({ data, onClose }) {
 
           {/* Opportunity */}
           <div className="opp">
-            <div className="opp-title">🎯 Oportunidade de negócio</div>
+            <div className="opp-title">🎯 Oportunidade de negócio (análise)</div>
             <div className="opp-text">{data.opportunity}</div>
           </div>
+
+          <RealDataSection id={data.id} />
 
           <div className="profile">{data.economyProfile}</div>
 
